@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace WeatherAppMAUI;
+﻿namespace WeatherAppMAUI;
 
 public partial class App : Application
 {
