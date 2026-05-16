@@ -42,4 +42,16 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}" />
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}" />
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}" />
+    
+    <!-- Weather app: semantic dark theme colors -->
+    <Color x:Key="AppBackground">#0F1115</Color>
+    <Color x:Key="AppSurface">#1A1D24</Color>
+    <Color x:Key="AppSurfaceElevated">#232831</Color>
+    <Color x:Key="AppTextPrimary">#F5F5F5</Color>
+    <Color x:Key="AppTextSecondary">#9BA1AB</Color>
+    <Color x:Key="AppTextMuted">#6B7280</Color>
+    <Color x:Key="AppAccent">#4F9DFF</Color>
+    <Color x:Key="AppAccentMuted">#2C5A99</Color>
+    <Color x:Key="AppError">#F87171</Color>
+    <Color x:Key="AppDivider">#2A2F38</Color>
 </ResourceDictionary>

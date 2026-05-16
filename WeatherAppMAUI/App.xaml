@@ -9,6 +9,17 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Weather app: global overrides for dark theme -->
+            <Style TargetType="Page" ApplyToDerivedTypes="True">
+                <Setter Property="BackgroundColor" Value="{StaticResource AppBackground}" />
+            </Style>
+
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource AppTextPrimary}" />
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+            </Style>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>
