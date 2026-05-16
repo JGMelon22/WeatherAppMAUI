@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using WeatherAppMAUI.Services;
 
 namespace WeatherAppMAUI;
 
@@ -14,6 +15,12 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
+
+        builder.Services.AddHttpClient<IWeatherClient, WeatherService>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.openweathermap.org/");
+            client.Timeout = TimeSpan.FromSeconds(15);
+        });
 
 #if DEBUG
         builder.Logging.AddDebug();
