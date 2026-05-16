@@ -41,14 +41,14 @@ public partial class MainPage : ContentPage
 
             WeatherCard.IsVisible = true;
         }
-        catch (CityNotFoundException)
+        catch (CityNotFoundException ex)
         {
-            ErrorLabel.Text = $"City \"{city}\" not found.";
+            ErrorLabel.Text = ex.Message;
             ErrorLabel.IsVisible = true;
         }
-        catch (InvalidApiKeyException)
+        catch (InvalidApiKeyException ex)
         {
-            ErrorLabel.Text = "Invalid API key";
+            ErrorLabel.Text = ex.Message;
             ErrorLabel.IsVisible = true;
         }
         catch (HttpRequestException)
