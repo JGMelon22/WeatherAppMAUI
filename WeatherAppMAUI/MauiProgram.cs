@@ -22,6 +22,8 @@ public static class MauiProgram
             client.Timeout = TimeSpan.FromSeconds(15);
         });
 
+        builder.Services.AddTransient<MainPage>();
+
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

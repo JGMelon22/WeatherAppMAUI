@@ -8,7 +8,7 @@
     <Grid Padding="20,40,20,20"
           RowSpacing="20"
           RowDefinitions="Auto,Auto,*">
-       
+
         <!-- Title -->
         <Label Grid.Row="0"
                Text="Weather"
@@ -21,98 +21,100 @@
               ColumnDefinitions="*,Auto"
               ColumnSpacing="10">
             <Entry Grid.Column="0"
+                   x:Name="CityEntry"
                    Placeholder="Enter city..."
                    PlaceholderColor="{StaticResource AppTextMuted}"
                    TextColor="{StaticResource AppTextPrimary}"
                    BackgroundColor="{StaticResource AppSurface}"
                    Text="" />
             <Button Grid.Column="1"
+                    x:Name="SearchButton"
                     Text="Search"
+                    Clicked="OnSearchClicked"
                     BackgroundColor="{StaticResource AppAccent}"
                     TextColor="{StaticResource AppTextPrimary}"
                     CornerRadius="8" />
         </Grid>
 
-        <!-- Weather card -->
         <ScrollView Grid.Row="2">
-            <Border Background="{StaticResource AppSurface}"
-                    Stroke="{StaticResource AppDivider}"
-                    StrokeThickness="1"
-                    Padding="20"
-                    VerticalOptions="Start">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
-                </Border.StrokeShape>
+            <Grid>
+                <!-- Loading -->
+                <ActivityIndicator x:Name="LoadingIndicator"
+                                   IsRunning="False"
+                                   IsVisible="False"
+                                   Color="{StaticResource AppAccent}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Start"
+                                   Margin="0,40,0,0" />
 
-                <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                <!-- Error -->
+                <Label x:Name="ErrorLabel"
+                       IsVisible="False"
+                       Text=""
+                       TextColor="{StaticResource AppError}"
+                       FontSize="16"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Start"
+                       HorizontalTextAlignment="Center"
+                       Margin="20,40,20,0" />
 
-                    <Label Text="London, GB"
-                           FontSize="22"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center" />
+                <!-- Card -->
+                <Border x:Name="WeatherCard"
+                        IsVisible="False"
+                        Background="{StaticResource AppSurface}"
+                        Stroke="{StaticResource AppDivider}"
+                        StrokeThickness="1"
+                        Padding="20"
+                        VerticalOptions="Start">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
 
-                    <Image Source="https://openweathermap.org/img/wn/04d@2x.png"
-                           HeightRequest="120"
-                           WidthRequest="120"
-                           HorizontalOptions="Center" />
+                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Label x:Name="LocationLabel" Text=""
+                               FontSize="22" FontAttributes="Bold" HorizontalOptions="Center" />
 
-                    <Label Text="18°"
-                           FontSize="64"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center" />
+                        <Image x:Name="WeatherIcon"
+                               Source="/"
+                               HeightRequest="120" WidthRequest="120"
+                               HorizontalOptions="Center" />
 
-                    <Label Text="Partly cloudy"
-                           FontSize="18"
-                           TextColor="{StaticResource AppTextSecondary}"
-                           HorizontalOptions="Center" />
+                        <Label x:Name="TempLabel" Text=""
+                               FontSize="64" FontAttributes="Bold" HorizontalOptions="Center" />
 
-                    <Label Text="Feels like 17°"
-                           FontSize="14"
-                           TextColor="{StaticResource AppTextMuted}"
-                           HorizontalOptions="Center"
-                           Margin="0,0,0,12" />
+                        <Label x:Name="DescriptionLabel" Text=""
+                               FontSize="18" TextColor="{StaticResource AppTextSecondary}"
+                               HorizontalOptions="Center" />
 
-                    <!-- Stats row -->
-                    <Grid ColumnDefinitions="*,*,*"
-                          ColumnSpacing="8">
+                        <Label x:Name="FeelsLikeLabel" Text=""
+                               FontSize="14" TextColor="{StaticResource AppTextMuted}"
+                               HorizontalOptions="Center" Margin="0,0,0,12" />
 
-                        <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="2">
-                            <Label Text="Humidity"
-                                   FontSize="12"
-                                   TextColor="{StaticResource AppTextMuted}"
-                                   HorizontalOptions="Center" />
-                            <Label Text="72%"
-                                   FontSize="16"
-                                   FontAttributes="Bold"
-                                   HorizontalOptions="Center" />
-                        </VerticalStackLayout>
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="2">
+                                <Label Text="Humidity" FontSize="12"
+                                       TextColor="{StaticResource AppTextMuted}" HorizontalOptions="Center" />
+                                <Label x:Name="HumidityLabel" Text="" FontSize="16"
+                                       FontAttributes="Bold" HorizontalOptions="Center" />
+                            </VerticalStackLayout>
 
-                        <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="2">
-                            <Label Text="Wind"
-                                   FontSize="12"
-                                   TextColor="{StaticResource AppTextMuted}"
-                                   HorizontalOptions="Center" />
-                            <Label Text="3.6 m/s"
-                                   FontSize="16"
-                                   FontAttributes="Bold"
-                                   HorizontalOptions="Center" />
-                        </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="2">
+                                <Label Text="Wind" FontSize="12"
+                                       TextColor="{StaticResource AppTextMuted}" HorizontalOptions="Center" />
+                                <Label x:Name="WindLabel" Text="" FontSize="16"
+                                       FontAttributes="Bold" HorizontalOptions="Center" />
+                            </VerticalStackLayout>
 
-                        <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center" Spacing="2">
-                            <Label Text="Pressure"
-                                   FontSize="12"
-                                   TextColor="{StaticResource AppTextMuted}"
-                                   HorizontalOptions="Center" />
-                            <Label Text="1012 hPa"
-                                   FontSize="16"
-                                   FontAttributes="Bold"
-                                   HorizontalOptions="Center" />
-                        </VerticalStackLayout>
-
-                    </Grid>
-
-                </VerticalStackLayout>
-            </Border>
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center" Spacing="2">
+                                <Label Text="Pressure" FontSize="12"
+                                       TextColor="{StaticResource AppTextMuted}" HorizontalOptions="Center" />
+                                <Label x:Name="PressureLabel" Text="" FontSize="16"
+                                       FontAttributes="Bold" HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
         </ScrollView>
     </Grid>
 
