@@ -2,8 +2,18 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:WeatherAppMAUI.ViewModels"
+             xmlns:converters="clr-namespace:WeatherAppMAUI.Converters"
              x:Class="WeatherAppMAUI.MainPage"
+             x:DataType="vm:WeatherViewModel"
              Title="">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:WeatherIconConverter x:Key="WeatherIconConverter" />
+            <converters:DescriptionConverter x:Key="DescriptionConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <Grid Padding="20,40,20,20"
           RowSpacing="20"
@@ -21,36 +31,35 @@
               ColumnDefinitions="*,Auto"
               ColumnSpacing="10">
             <Entry Grid.Column="0"
-                   x:Name="CityEntry"
                    Placeholder="Enter city..."
                    PlaceholderColor="{StaticResource AppTextMuted}"
                    TextColor="{StaticResource AppTextPrimary}"
                    BackgroundColor="{StaticResource AppSurface}"
-                   Text="" />
+                   Text="{Binding City}"
+                   ReturnType="Search"
+                   ReturnCommand="{Binding SearchCommand}" />
             <Button Grid.Column="1"
-                    x:Name="SearchButton"
                     Text="Search"
-                    Clicked="OnSearchClicked"
                     BackgroundColor="{StaticResource AppAccent}"
                     TextColor="{StaticResource AppTextPrimary}"
-                    CornerRadius="8" />
+                    CornerRadius="8"
+                    Command="{Binding SearchCommand}" />
         </Grid>
 
+        <!-- Card area: loading / error / success -->
         <ScrollView Grid.Row="2">
             <Grid>
                 <!-- Loading -->
-                <ActivityIndicator x:Name="LoadingIndicator"
-                                   IsRunning="False"
-                                   IsVisible="False"
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   IsVisible="{Binding IsLoading}"
                                    Color="{StaticResource AppAccent}"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Start"
                                    Margin="0,40,0,0" />
 
                 <!-- Error -->
-                <Label x:Name="ErrorLabel"
-                       IsVisible="False"
-                       Text=""
+                <Label IsVisible="{Binding IsError}"
+                       Text="{Binding ErrorMessage}"
                        TextColor="{StaticResource AppError}"
                        FontSize="16"
                        HorizontalOptions="Center"
@@ -58,9 +67,8 @@
                        HorizontalTextAlignment="Center"
                        Margin="20,40,20,0" />
 
-                <!-- Card -->
-                <Border x:Name="WeatherCard"
-                        IsVisible="False"
+                <!-- Weather Card -->
+                <Border IsVisible="{Binding HasWeather}"
                         Background="{StaticResource AppSurface}"
                         Stroke="{StaticResource AppDivider}"
                         StrokeThickness="1"
@@ -71,51 +79,63 @@
                     </Border.StrokeShape>
 
                     <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
-                        <Label x:Name="LocationLabel" Text=""
-                               FontSize="22" FontAttributes="Bold" HorizontalOptions="Center" />
 
-                        <Image x:Name="WeatherIcon"
-                               Source="/"
-                               HeightRequest="120" WidthRequest="120"
+                        <Label Text="{Binding Weather.Name, StringFormat='{0}'}"
+                               FontSize="22"
+                               FontAttributes="Bold"
                                HorizontalOptions="Center" />
 
-                        <Label x:Name="TempLabel" Text=""
-                               FontSize="64" FontAttributes="Bold" HorizontalOptions="Center" />
-
-                        <Label x:Name="DescriptionLabel" Text=""
-                               FontSize="18" TextColor="{StaticResource AppTextSecondary}"
+                        <Image Source="{Binding Weather, Converter={StaticResource WeatherIconConverter}}"
+                               HeightRequest="120"
+                               WidthRequest="120"
                                HorizontalOptions="Center" />
 
-                        <Label x:Name="FeelsLikeLabel" Text=""
-                               FontSize="14" TextColor="{StaticResource AppTextMuted}"
-                               HorizontalOptions="Center" Margin="0,0,0,12" />
+                        <Label Text="{Binding Weather.Main.Temp, StringFormat='{0:0}°'}"
+                               FontSize="64"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center" />
+
+                        <Label Text="{Binding Weather, Converter={StaticResource DescriptionConverter}}"
+                               FontSize="18"
+                               TextColor="{StaticResource AppTextSecondary}"
+                               HorizontalOptions="Center" />
+
+                        <Label Text="{Binding Weather.Main.FeelsLike, StringFormat='Feels like {0:0}°'}"
+                               FontSize="14"
+                               TextColor="{StaticResource AppTextMuted}"
+                               HorizontalOptions="Center"
+                               Margin="0,0,0,12" />
 
                         <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+
                             <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="2">
                                 <Label Text="Humidity" FontSize="12"
                                        TextColor="{StaticResource AppTextMuted}" HorizontalOptions="Center" />
-                                <Label x:Name="HumidityLabel" Text="" FontSize="16"
-                                       FontAttributes="Bold" HorizontalOptions="Center" />
+                                <Label Text="{Binding Weather.Main.Humidity, StringFormat='{0}%'}"
+                                       FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" />
                             </VerticalStackLayout>
 
                             <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="2">
                                 <Label Text="Wind" FontSize="12"
                                        TextColor="{StaticResource AppTextMuted}" HorizontalOptions="Center" />
-                                <Label x:Name="WindLabel" Text="" FontSize="16"
-                                       FontAttributes="Bold" HorizontalOptions="Center" />
+                                <Label Text="{Binding Weather.Wind.Speed, StringFormat='{0:0:0} m/s'}"
+                                       FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" />
                             </VerticalStackLayout>
 
                             <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center" Spacing="2">
                                 <Label Text="Pressure" FontSize="12"
                                        TextColor="{StaticResource AppTextMuted}" HorizontalOptions="Center" />
-                                <Label x:Name="PressureLabel" Text="" FontSize="16"
-                                       FontAttributes="Bold" HorizontalOptions="Center" />
+                                <Label Text="{Binding Weather.Main.Pressure, StringFormat='{0} hPa'}"
+                                       FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" />
                             </VerticalStackLayout>
+
                         </Grid>
+
                     </VerticalStackLayout>
                 </Border>
             </Grid>
         </ScrollView>
+
     </Grid>
 
 </ContentPage>

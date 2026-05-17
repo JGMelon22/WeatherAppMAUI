@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using WeatherAppMAUI.Services;
+using WeatherAppMAUI.ViewModels;
 
 namespace WeatherAppMAUI;
 
@@ -23,6 +24,7 @@ public static class MauiProgram
         });
 
         builder.Services.AddTransient<MainPage>();
+        builder.Services.AddTransient<WeatherViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();
