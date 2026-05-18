@@ -4,5 +4,5 @@ namespace WeatherAppMAUI.Services;
 
 public interface IWeatherClient
 {
-    Task<WeatherResponse> GetWeatherAsync(string city, CancellationToken cancellationToken = default);
+    Task<WeatherResponse?> GetWeatherAsync(string city, CancellationToken cancellationToken = default);
 }

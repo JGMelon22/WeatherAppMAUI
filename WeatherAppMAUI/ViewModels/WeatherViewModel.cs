@@ -39,7 +39,7 @@ public partial class WeatherViewModel(IWeatherClient weatherClient) : Observable
         try
         {
             var weather = await weatherClient.GetWeatherAsync(city);
-            State = new WeatherUiState.Success(weather);
+            State = new WeatherUiState.Success(weather!);
         }
         catch (CityNotFoundException ex)
         {

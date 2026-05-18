@@ -26,6 +26,8 @@ public static class MauiProgram
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<WeatherViewModel>();
 
+        builder.Services.AddMemoryCache(options => { options.SizeLimit = 10_000; });
+
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
