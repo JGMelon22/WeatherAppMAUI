@@ -1,6 +1,6 @@
 namespace WeatherAppMAUI.Constants;
 
-public class ApiKeyConstant
+public static class ApiKeyConstant
 {
     public const string ApiKey = "YOUR_KEY_HERE";
 }

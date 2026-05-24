@@ -80,10 +80,14 @@
 
                     <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
 
-                        <Label Text="{Binding Weather.Name, StringFormat='{0}'}"
-                               FontSize="22"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center" />
+                        <Label FontSize="22" FontAttributes="Bold" HorizontalOptions="Center">
+                            <Label.Text>
+                                <MultiBinding StringFormat="{}{0}, {1}">
+                                    <Binding Path="Weather.Name" />
+                                    <Binding Path="Weather.Sys.Country" />
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
 
                         <Image Source="{Binding Weather, Converter={StaticResource WeatherIconConverter}}"
                                HeightRequest="120"
